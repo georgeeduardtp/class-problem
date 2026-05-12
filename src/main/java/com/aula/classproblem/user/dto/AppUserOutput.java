@@ -4,21 +4,14 @@ import java.time.OffsetDateTime;
 
 import com.aula.classproblem.user.entity.UserRole;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class AppUserOutput {
-
-    private Long id;
-    private String username;
-    private String fullName;
-    private String email;
-    private UserRole roles;
-    private OffsetDateTime createdAt;
-}
+public record AppUserOutput(
+    Long id,
+    String username,
+    String fullName,
+    String email,
+    UserRole roles,
+    OffsetDateTime createdAt
+) {}

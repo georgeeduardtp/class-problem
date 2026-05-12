@@ -9,8 +9,10 @@ import com.aula.classproblem.user.entity.AppUser;
 import com.aula.classproblem.user.mapper.AppUserMapper;
 import com.aula.classproblem.user.repository.AppUserRepository;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -33,7 +35,7 @@ public class AppUserServiceImpl implements AppUserService {
     public AppUserOutput findById(Long id) {
         return repository.findById(id)
                 .map(AppUserMapper::toOutput)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
     @Override
@@ -46,13 +48,13 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUserOutput update(Long id, AppUserInput input) {
         return repository.findById(id).map(existing -> {
-            existing.setUsername(input.getUsername());
-            existing.setFullName(input.getFullName());
-            existing.setEmail(input.getEmail());
-            existing.setRoles(input.getRoles());
+            existing.setUsername(input.username());
+            existing.setFullName(input.fullName());
+            existing.setEmail(input.email());
+            existing.setRoles(input.roles());
             AppUser saved = repository.save(existing);
             return AppUserMapper.toOutput(saved);
-        }).orElse(null);
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
     @Override
