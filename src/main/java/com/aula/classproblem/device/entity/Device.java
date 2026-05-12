@@ -1,4 +1,6 @@
-package com.aula.classproblem.classroom.entity;
+package com.aula.classproblem.device.entity;
+
+import com.aula.classproblem.classroom.entity.Classroom;
 
 import jakarta.persistence.*;
 import lombok.*;

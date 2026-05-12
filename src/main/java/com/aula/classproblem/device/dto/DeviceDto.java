@@ -1,4 +1,4 @@
-package com.aula.classproblem.classroom.dto;
+package com.aula.classproblem.device.dto;
 
 import lombok.*;
 import java.time.OffsetDateTime;

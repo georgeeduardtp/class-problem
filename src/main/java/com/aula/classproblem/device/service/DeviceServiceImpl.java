@@ -1,11 +1,12 @@
-package com.aula.classproblem.classroom.service;
+package com.aula.classproblem.device.service;
 
-import com.aula.classproblem.classroom.dto.DeviceDto;
 import com.aula.classproblem.classroom.entity.Classroom;
-import com.aula.classproblem.classroom.entity.Device;
-import com.aula.classproblem.classroom.mapper.DeviceMapper;
 import com.aula.classproblem.classroom.repository.ClassroomRepository;
-import com.aula.classproblem.classroom.repository.DeviceRepository;
+import com.aula.classproblem.device.dto.DeviceDto;
+import com.aula.classproblem.device.entity.Device;
+import com.aula.classproblem.device.mapper.DeviceMapper;
+import com.aula.classproblem.device.repository.DeviceRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,13 +41,13 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public DeviceDto create(DeviceDto dto) {
         Device entity = DeviceMapper.toEntity(dto);
-        
+
         if (dto.getClassroomId() != null) {
             Classroom classroom = classroomRepository.findById(dto.getClassroomId())
                     .orElseThrow(() -> new RuntimeException("Classroom not found"));
             entity.setClassroom(classroom);
         }
-        
+
         return DeviceMapper.toDto(repository.save(entity));
     }
 
@@ -54,11 +55,11 @@ public class DeviceServiceImpl implements DeviceService {
     public DeviceDto update(Long id, DeviceDto dto) {
         Device existing = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Device not found"));
-        
+
         existing.setSerial(dto.getSerial());
         existing.setDisplayName(dto.getDisplayName());
         existing.setDeviceType(dto.getDeviceType());
-        
+
         if (dto.getClassroomId() != null) {
             Classroom classroom = classroomRepository.findById(dto.getClassroomId())
                     .orElseThrow(() -> new RuntimeException("Classroom not found"));
@@ -66,7 +67,7 @@ public class DeviceServiceImpl implements DeviceService {
         } else {
             existing.setClassroom(null);
         }
-        
+
         return DeviceMapper.toDto(repository.save(existing));
     }
 
