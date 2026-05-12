@@ -2,6 +2,7 @@ package com.aula.classproblem.incidence.service;
 
 import com.aula.classproblem.incidence.dto.IncidenceDto;
 import com.aula.classproblem.incidence.entity.Incidence;
+import com.aula.classproblem.incidence.entity.IncidentStatus;
 import com.aula.classproblem.incidence.mapper.IncidenceMapper;
 import com.aula.classproblem.incidence.repository.IncidenceRepository;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,11 @@ import java.util.stream.Collectors;
 public class IncidenceServiceImpl implements IncidenceService {
 
     private final IncidenceRepository repository;
+    private final IncidenceHistoryService historyService;
 
-    public IncidenceServiceImpl(IncidenceRepository repository) {
+    public IncidenceServiceImpl(IncidenceRepository repository, IncidenceHistoryService historyService) {
         this.repository = repository;
+        this.historyService = historyService;
     }
 
     @Override
@@ -37,12 +40,23 @@ public class IncidenceServiceImpl implements IncidenceService {
             entity.setReportedAt(java.time.OffsetDateTime.now());
         }
         Incidence saved = repository.save(entity);
+
+        historyService.recordHistory(
+                saved.getId(),
+                saved.getUserId(),
+                null,
+                saved.getStatus(),
+                "Incidencia creada"
+        );
+
         return IncidenceMapper.toDto(saved);
     }
 
     @Override
     public IncidenceDto update(Long id, IncidenceDto dto) {
         return repository.findById(id).map(existing -> {
+            IncidentStatus oldStatus = existing.getStatus();
+            
             existing.setTitle(dto.getTitle());
             existing.setDescription(dto.getDescription());
             if (dto.getStatus() != null) {
@@ -57,7 +71,19 @@ public class IncidenceServiceImpl implements IncidenceService {
             if (dto.getResolvedAt() != null) {
                 existing.setResolvedAt(dto.getResolvedAt());
             }
+            
             Incidence saved = repository.save(existing);
+
+            if (oldStatus != saved.getStatus()) {
+                historyService.recordHistory(
+                        saved.getId(),
+                        dto.getUserId(),
+                        oldStatus,
+                        saved.getStatus(),
+                        "Estado actualizado"
+                );
+            }
+
             return IncidenceMapper.toDto(saved);
         }).orElse(null);
     }
