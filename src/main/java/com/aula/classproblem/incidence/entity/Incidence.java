@@ -1,7 +1,6 @@
 package com.aula.classproblem.incidence.entity;
 
 import java.time.OffsetDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,14 +26,14 @@ public class Incidence {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, columnDefinition = "incident_status")
+    @Column(nullable = false)
     @Builder.Default
     private IncidentStatus status = IncidentStatus.OPEN;
 
@@ -48,13 +46,11 @@ public class Incidence {
     @Column(name = "device_id")
     private Long deviceId;
 
-    @Column(name = "photo_url")
+    @Column(name = "photo_url", columnDefinition = "TEXT")
     private String photoUrl;
 
-    @Column(name = "reported_at")
     @Builder.Default
     private OffsetDateTime reportedAt = OffsetDateTime.now();
 
-    @Column(name = "resolved_at")
     private OffsetDateTime resolvedAt;
 }

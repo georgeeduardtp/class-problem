@@ -1,48 +1,43 @@
 package com.aula.classproblem.incidence.mapper;
 
+import org.springframework.stereotype.Component;
 import com.aula.classproblem.incidence.dto.IncidenceDto;
 import com.aula.classproblem.incidence.entity.Incidence;
 
-public final class IncidenceMapper {
+@Component
+public class IncidenceMapper {
 
-    private IncidenceMapper() {
+    public Incidence toEntity(IncidenceDto dto) {
+        if (dto == null)
+            return null;
+        return Incidence.builder()
+                .id(dto.getId())
+                .title(dto.getTitle())
+                .description(dto.getDescription())
+                .status(dto.getStatus())
+                .userId(dto.getUserId())
+                .classroomId(dto.getClassroomId())
+                .deviceId(dto.getDeviceId())
+                .photoUrl(dto.getPhotoUrl())
+                .reportedAt(dto.getReportedAt())
+                .resolvedAt(dto.getResolvedAt())
+                .build();
     }
 
-    public static IncidenceDto toDto(Incidence entity) {
-        if (entity == null) {
+    public IncidenceDto toDto(Incidence entity) {
+        if (entity == null)
             return null;
-        }
-        return new IncidenceDto(
-                entity.getId(),
-                entity.getTitle(),
-                entity.getDescription(),
-                entity.getStatus(),
-                entity.getUserId(),
-                entity.getClassroomId(),
-                entity.getDeviceId(),
-                entity.getPhotoUrl(),
-                entity.getReportedAt(),
-                entity.getResolvedAt()
-        );
-    }
-
-    public static Incidence toEntity(IncidenceDto dto) {
-        if (dto == null) {
-            return null;
-        }
-        Incidence entity = new Incidence();
-        entity.setId(dto.getId());
-        entity.setTitle(dto.getTitle());
-        entity.setDescription(dto.getDescription());
-        if (dto.getStatus() != null) {
-            entity.setStatus(dto.getStatus());
-        }
-        entity.setUserId(dto.getUserId());
-        entity.setClassroomId(dto.getClassroomId());
-        entity.setDeviceId(dto.getDeviceId());
-        entity.setPhotoUrl(dto.getPhotoUrl());
-        entity.setReportedAt(dto.getReportedAt());
-        entity.setResolvedAt(dto.getResolvedAt());
-        return entity;
+        return IncidenceDto.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .userId(entity.getUserId())
+                .classroomId(entity.getClassroomId())
+                .deviceId(entity.getDeviceId())
+                .photoUrl(entity.getPhotoUrl())
+                .reportedAt(entity.getReportedAt())
+                .resolvedAt(entity.getResolvedAt())
+                .build();
     }
 }
