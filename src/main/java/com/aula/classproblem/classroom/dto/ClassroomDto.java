@@ -8,6 +8,9 @@ public class ClassroomDto {
     private String number;
     private OffsetDateTime createdAt;
 
+    private String health;
+    private Long activeIncidentsCount;
+
     public ClassroomDto() {
     }
 
@@ -16,6 +19,15 @@ public class ClassroomDto {
         this.module = module;
         this.number = number;
         this.createdAt = createdAt;
+    }
+
+    public ClassroomDto(Long id, String module, String number, OffsetDateTime createdAt, String health, Long activeIncidentsCount) {
+        this.id = id;
+        this.module = module;
+        this.number = number;
+        this.createdAt = createdAt;
+        this.health = health;
+        this.activeIncidentsCount = activeIncidentsCount;
     }
 
     public Long getId() {
@@ -48,5 +60,21 @@ public class ClassroomDto {
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getHealth() {
+        return health;
+    }
+
+    public void setHealth(String health) {
+        this.health = health;
+    }
+
+    public Long getActiveIncidentsCount() {
+        return activeIncidentsCount;
+    }
+
+    public void setActiveIncidentsCount(Long activeIncidentsCount) {
+        this.activeIncidentsCount = activeIncidentsCount;
     }
 }

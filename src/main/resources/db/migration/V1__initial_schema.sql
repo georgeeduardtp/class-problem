@@ -39,7 +39,7 @@ CREATE TABLE incidence (
     device_id BIGINT REFERENCES device(id) ON DELETE SET NULL,
     photo_url VARCHAR(1000),
     reported_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
-    resolved_at TIMESTAMP WITH TIME ZONE,
+    resolved_at TIMESTAMP WITH TIME ZONE
 );
 
 CREATE TABLE incidence_history (

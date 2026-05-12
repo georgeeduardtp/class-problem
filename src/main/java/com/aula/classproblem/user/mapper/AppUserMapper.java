@@ -28,10 +28,10 @@ public final class AppUserMapper {
             return null;
         }
         return AppUser.builder()
-                .username(input.getUsername())
-                .fullName(input.getFullName())
-                .email(input.getEmail())
-                .roles(input.getRoles())
+                .username(input.username())
+                .fullName(input.fullName())
+                .email(input.email())
+                .roles(input.roles())
                 .build();
     }
 }
